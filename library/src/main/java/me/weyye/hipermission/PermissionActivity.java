@@ -112,12 +112,11 @@ public class PermissionActivity extends AppCompatActivity {
                 ActivityCompat.requestPermissions(PermissionActivity.this, strs, REQUEST_CODE_MUTI);
             }
         });
-        mDialog = new Dialog(this);
-        mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        mDialog.setContentView(contentView);
+        mDialog = new AlertDialog.Builder(this)
+                .setView(contentView)
+                .create();
         if (mAnimStyleId != -1)
             mDialog.getWindow().setWindowAnimations(mAnimStyleId);
-
         mDialog.setCanceledOnTouchOutside(false);
         mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         mDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
