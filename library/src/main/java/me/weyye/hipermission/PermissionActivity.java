@@ -134,16 +134,11 @@ public class PermissionActivity extends AppCompatActivity {
 
 
     private void reRequestPermission(final String permission) {
-        String permissionName = getPermissionItem(permission).PermissionName;
-        String alertTitle = String.format(getString(R.string.permission_title), permissionName);
-        String msg = String.format(getString(R.string.permission_denied), permissionName, mAppName);
-        showAlertDialog(alertTitle, msg, getString(R.string.permission_cancel), getString(R.string.permission_ensure), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                requestPermission(new String[]{permission}, REQUEST_CODE_MUTI_SINGLE);
-            }
-        });
+        String[] permissionName = new String[mCheckPermissions.size()];
+        for (int i = 0; i < mCheckPermissions.size(); i++) {
+            permissionName[i] = mCheckPermissions.get(i).PermissionName;
+        }
+        requestPermission(permissionName, REQUEST_CODE_MUTI_SINGLE);
     }
 
     private void requestPermission(String[] permissions, int requestCode) {
@@ -227,10 +222,15 @@ public class PermissionActivity extends AppCompatActivity {
                 if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
                     //重新申请后再次拒绝
                     //弹框警告! haha
+                    StringBuilder stringBuilder = new StringBuilder("");
+                    for (PermissionItem permissionItem : mCheckPermissions) {
+                        stringBuilder.append(permissionItem.PermissionName).append("/");
+                    }
+                    stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+                    String name = stringBuilder.toString();
                     try {
                         //permissions可能返回空数组，所以try-catch
-                        String name = getPermissionItem(permissions[0]).PermissionName;
-                        String title = String.format(getString(R.string.permission_title), name);
+                        String title = getString(R.string.permission_title);
                         String msg = String.format(getString(R.string.permission_denied_with_naac), mAppName, name, mAppName);
                         showAlertDialog(title, msg, getString(R.string.permission_reject), getString(R.string.permission_go_to_setting), new DialogInterface.OnClickListener() {
                             @Override
