@@ -18,7 +18,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 
 import java.util.List;
 import java.util.ListIterator;
@@ -226,6 +225,9 @@ public class PermissionActivity extends AppCompatActivity {
                         stringBuilder.append(permissionItem.PermissionName).append("/");
                     }
                     stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+                    if (mCheckPermissions.size() > 1) {
+                        stringBuilder.append("等");
+                    }
                     String name = stringBuilder.toString();
                     try {
                         //permissions可能返回空数组，所以try-catch

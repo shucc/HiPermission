@@ -5,7 +5,6 @@ import java.io.Serializable;
 /**
  * Created by Administrator on 2017/5/10 0010.
  */
-
 public class PermissionItem implements Serializable {
     public String PermissionName;
     public String Permission;

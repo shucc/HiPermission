@@ -13,7 +13,6 @@ import java.util.List;
 /**
  * Created by Administrator on 2017/5/10 0010.
  */
-
 public class PermissionAdapter extends BaseAdapter {
     private List<PermissionItem> mData;
     private int mTextColor;

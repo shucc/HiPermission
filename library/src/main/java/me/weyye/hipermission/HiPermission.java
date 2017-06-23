@@ -18,7 +18,6 @@ import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 /**
  * Created by Administrator on 2017/5/10 0010.
  */
-
 public class HiPermission {
     private final Context mContext;
 //    private static HiPermission mInstance;
