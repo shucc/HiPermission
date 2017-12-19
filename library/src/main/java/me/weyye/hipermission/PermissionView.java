@@ -3,9 +3,6 @@ package me.weyye.hipermission;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.graphics.Color;
-import android.graphics.ColorFilter;
-import android.graphics.ColorMatrixColorFilter;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
@@ -42,11 +39,11 @@ public class PermissionView extends FrameLayout {
 
     private void initView() {
         View permissionView = View.inflate(getContext(), R.layout.dialog_request_permission, this);
-        mTvTitle = (TextView) permissionView.findViewById(R.id.tvTitle);
-        mLlRoot = (LinearLayout) permissionView.findViewById(R.id.llRoot);
-        mTvDesc = (TextView) permissionView.findViewById(R.id.tvDesc);
-        mBtnNext = (Button) permissionView.findViewById(R.id.goto_settings);
-        mGvPermission = (GridView) permissionView.findViewById(R.id.gvPermission);
+        mTvTitle = permissionView.findViewById(R.id.tvTitle);
+        mLlRoot = permissionView.findViewById(R.id.llRoot);
+        mTvDesc = permissionView.findViewById(R.id.tvDesc);
+        mBtnNext = permissionView.findViewById(R.id.goto_settings);
+        mGvPermission =  permissionView.findViewById(R.id.gvPermission);
     }
 
     public void setGridViewColum(int colum) {
@@ -78,62 +75,39 @@ public class PermissionView extends FrameLayout {
                 R.attr.PermissionTitleColor,
                 R.attr.PermissionItemTextColor,
                 R.attr.PermissionButtonTextColor,
-                R.attr.PermissionBackround,
-                R.attr.PermissionButtonBackground,
-                R.attr.PermissionBgFilterColor,
-                R.attr.PermissionIconFilterColor
+                R.attr.PermissionBackground,
+                R.attr.PermissionButtonBackground
         };
         Resources.Theme theme = getResources().newTheme();
         theme.applyStyle(styleId, true);
 
         TypedArray typedArray = theme.obtainStyledAttributes(ints);
-        int msgColor = typedArray.getColor(0, 0);
-        int titleColor = typedArray.getColor(1, 0);
-        int itemTextColor = typedArray.getColor(2, 0);
-        int btnTextColor = typedArray.getColor(3, 0);
+        int msgColor = typedArray.getColor(0, -1);
+        int titleColor = typedArray.getColor(1, -1);
+        int itemTextColor = typedArray.getColor(2, -1);
+        int btnTextColor = typedArray.getColor(3, -1);
         Drawable background = typedArray.getDrawable(4);
-        Drawable Btnbackground = typedArray.getDrawable(5);
-        int bgFilterColor = typedArray.getColor(6, 0);
-        int iconFilterColor = typedArray.getColor(7, 0);
+        Drawable btnBackground = typedArray.getDrawable(5);
 
-        if (titleColor != 0)
+
+        if (titleColor != -1)
             mTvTitle.setTextColor(titleColor);
-        if (background != null) {
-            if (bgFilterColor != 0)
-                background.setColorFilter(getColorFilter(bgFilterColor));
+        if (background != null)
             mLlRoot.setBackgroundDrawable(background);
-        }
-        if (msgColor != 0)
+        if (msgColor != -1)
             mTvDesc.setTextColor(msgColor);
-        if (itemTextColor != 0)
+        if (itemTextColor != -1)
             ((PermissionAdapter) mGvPermission.getAdapter()).setTextColor(itemTextColor);
-        if (Btnbackground != null)
-            mBtnNext.setBackgroundDrawable(Btnbackground);
-        if (btnTextColor != 0)
+        if (btnBackground != null)
+            mBtnNext.setBackgroundDrawable(btnBackground);
+        if (btnTextColor != -1)
             mBtnNext.setTextColor(btnTextColor);
-        if (iconFilterColor != 0)
-            setFilterColor(iconFilterColor);
-
         typedArray.recycle();
 
     }
 
-    private ColorFilter getColorFilter(int bgFilterColor) {
-        int blue = Color.blue(bgFilterColor);
-        int green = Color.green(bgFilterColor);
-        int red = Color.red(bgFilterColor);
-        float[] cm = new float[]{
-                1, 0, 0, 0, red,// 红色值
-                0, 1, 0, 0, green,// 绿色值
-                0, 0, 1, 0, blue,// 蓝色值
-                0, 0, 0, 1, 1 // 透明度
-        };
-        ColorMatrixColorFilter filter = new ColorMatrixColorFilter(cm);
-        return filter;
-    }
-
     public void setFilterColor(int color) {
-        if (color == 0)
+        if (color == -1)
             return;
 
         ((PermissionAdapter) mGvPermission.getAdapter()).setFilterColor(color);

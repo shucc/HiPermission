@@ -2,6 +2,7 @@ package me.weyye.hipermission;
 
 import android.graphics.Color;
 import android.graphics.ColorMatrixColorFilter;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -14,12 +15,18 @@ import java.util.List;
  * Created by Administrator on 2017/5/10 0010.
  */
 public class PermissionAdapter extends BaseAdapter {
+
     private List<PermissionItem> mData;
+
     private int mTextColor;
+
     private int mFilterColor;
+
+    private ColorMatrixColorFilter filter;
 
     public PermissionAdapter(List<PermissionItem> data) {
         mData = data;
+        changeColorFilter();
     }
 
     @Override
@@ -39,26 +46,24 @@ public class PermissionAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        PermissionHolder holder;
+        if (null == convertView) {
+            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.permission_info_item, parent, false);
+            holder = new PermissionHolder();
+            holder.imgIcon = convertView.findViewById(R.id.img_permission);
+            holder.textName = convertView.findViewById(R.id.text_permission_name);
+            convertView.setTag(holder);
+        } else {
+            holder = (PermissionHolder) convertView.getTag();
+        }
+        holder.imgIcon.setColorFilter(filter);
+        if (mTextColor != 0) {
+            holder.textName.setTextColor(mTextColor);
+        }
         PermissionItem item = mData.get(position);
-        View view = View.inflate(parent.getContext(), R.layout.permission_info_item, null);
-        int blue = Color.blue(mFilterColor);
-        int green = Color.green(mFilterColor);
-        int red = Color.red(mFilterColor);
-        ImageView icon = (ImageView) view.findViewById(R.id.icon);
-        float[] cm = new float[]{
-                1, 0, 0, 0, red,// 红色值
-                0, 1, 0, 0, green,// 绿色值
-                0, 0, 1, 0, blue,// 蓝色值
-                0, 0, 0, 1, 1 // 透明度
-        };
-        ColorMatrixColorFilter filter = new ColorMatrixColorFilter(cm);
-        icon.setColorFilter(filter);
-        TextView name = (TextView) view.findViewById(R.id.name);
-        if (mTextColor != 0)
-            name.setTextColor(mTextColor);
-        icon.setImageResource(item.PermissionIconRes);
-        name.setText(item.PermissionName);
-        return view;
+        holder.imgIcon.setImageResource(item.PermissionIconRes);
+        holder.textName.setText(item.PermissionName);
+        return convertView;
     }
 
     public void setTextColor(int itemTextColor) {
@@ -68,6 +73,25 @@ public class PermissionAdapter extends BaseAdapter {
 
     public void setFilterColor(int filterColor) {
         mFilterColor = filterColor;
+        changeColorFilter();
         notifyDataSetChanged();
+    }
+
+    private void changeColorFilter() {
+        int blue = Color.blue(mFilterColor);
+        int green = Color.green(mFilterColor);
+        int red = Color.red(mFilterColor);
+        float[] cm = new float[]{
+                1, 0, 0, 0, red,// 红色值
+                0, 1, 0, 0, green,// 绿色值
+                0, 0, 1, 0, blue,// 蓝色值
+                0, 0, 0, 1, 1 // 透明度
+        };
+        filter = new ColorMatrixColorFilter(cm);
+    }
+
+    private class PermissionHolder {
+        ImageView imgIcon;
+        TextView textName;
     }
 }

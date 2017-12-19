@@ -2,8 +2,8 @@ package me.weyye.demo;
 
 import android.Manifest;
 import android.os.Bundle;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -14,7 +14,7 @@ import me.weyye.hipermission.HiPermission;
 import me.weyye.hipermission.PermissionCallback;
 import me.weyye.hipermission.PermissionItem;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
 
@@ -22,116 +22,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        findViewById(R.id.btn1).setOnClickListener(this);
-        findViewById(R.id.btn2).setOnClickListener(this);
-        findViewById(R.id.btn3).setOnClickListener(this);
-        findViewById(R.id.btn4).setOnClickListener(this);
+
+        findViewById(R.id.btn_select_photo).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectLocalPhoto();
+            }
+        });
+        findViewById(R.id.btn_all_permission).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                applyAllPermission();
+            }
+        });
     }
 
-    private void showToast(String text) {
-        Toast.makeText(MainActivity.this, text, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn1:
-                //default is normal style
-                HiPermission.create(MainActivity.this)
-                        .animStyle(R.style.PermissionAnimFade)
-                        .checkMutiPermission(new PermissionCallback() {
-                            @Override
-                            public void onClose() {
-                                Log.i(TAG, "onClose");
-                                showToast(getString(R.string.permission_on_close));
-                            }
-
-                            @Override
-                            public void onFinish() {
-                                showToast(getString(R.string.permission_completed));
-                            }
-
-                            @Override
-                            public void onDeny(String permission, int position) {
-                                Log.i(TAG, "onDeny");
-                            }
-
-                            @Override
-                            public void onGuarantee(String permission, int position) {
-                                Log.i(TAG, "onGuarantee");
-                            }
-                        });
-                break;
-            case R.id.btn2:
-                //After you have set the theme, you must called filterColor () to set the color of the icon
-                // ,otherwise the default is black
-                List<PermissionItem> permissionItems = new ArrayList<PermissionItem>();
-                permissionItems.add(new PermissionItem(Manifest.permission.READ_PHONE_STATE, "手机状态", R.drawable.permission_ic_phone));
-                HiPermission.create(MainActivity.this)
-                        .title(getString(R.string.permission_cus_title))
-                        .permissions(permissionItems)
-                        .msg(getString(R.string.permission_cus_msg))
-                        .animStyle(R.style.PermissionAnimScale)
-                        .style(R.style.PermissionDefaultBlueStyle)
-                        .checkMutiPermission(new PermissionCallback() {
-                            @Override
-                            public void onClose() {
-                                Log.i(TAG, "onClose");
-                                showToast(getString(R.string.permission_on_close));
-                            }
-
-                            @Override
-                            public void onFinish() {
-                                showToast(getString(R.string.permission_completed));
-                            }
-
-                            @Override
-                            public void onDeny(String permission, int position) {
-                                Log.i(TAG, "onDeny");
-                            }
-
-                            @Override
-                            public void onGuarantee(String permission, int position) {
-                                Log.i(TAG, "onGuarantee");
-                            }
-                        });
-                break;
-            case R.id.btn3:
-                List<PermissionItem> permissions = new ArrayList<PermissionItem>();
-                permissions.add(new PermissionItem(Manifest.permission.CALL_PHONE, getString(R.string.permission_cus_item_phone), R.drawable.permission_ic_phone));
-                HiPermission.create(MainActivity.this)
-                        .title(getString(R.string.permission_cus_title))
-                        .permissions(permissions)
-                        .msg(getString(R.string.permission_cus_msg))
-                        .animStyle(R.style.PermissionAnimModal)
-                        .style(R.style.PermissionDefaultGreenStyle)
-//                        .style(R.style.CusStyle)
-                        .checkMutiPermission(new PermissionCallback() {
-                            @Override
-                            public void onClose() {
-                                Log.i(TAG, "onClose");
-                                showToast(getString(R.string.permission_on_close));
-                            }
-
-                            @Override
-                            public void onFinish() {
-                                showToast(getString(R.string.permission_completed));
-                            }
-
-                            @Override
-                            public void onDeny(String permission, int position) {
-                                Log.i(TAG, "onDeny");
-                            }
-
-                            @Override
-                            public void onGuarantee(String permission, int position) {
-                                Log.i(TAG, "onGuarantee");
-                            }
-                        });
-                break;
-            case R.id.btn4:
-                //request single permission only called onDeny or onGuarantee
-                HiPermission.create(MainActivity.this).checkSinglePermission(Manifest.permission.CAMERA, new PermissionCallback() {
+    private void selectLocalPhoto() {
+        List<PermissionItem> permissionItems = new ArrayList<>();
+        permissionItems.add(new PermissionItem(Manifest.permission.CAMERA, getString(R.string.permission_cus_item_camera), R.drawable.permission_ic_camera));
+        permissionItems.add(new PermissionItem(Manifest.permission.WRITE_EXTERNAL_STORAGE, getString(R.string.permission_cus_item_storage), R.drawable.permission_ic_storage));
+        HiPermission.create(this)
+                .title(getString(R.string.permission_cus_title))
+                .permissions(permissionItems)
+                .filterColor(ResourcesCompat.getColor(getResources(), R.color.colorPrimary, getTheme()))
+                .msg(getString(R.string.permission_cus_photo))
+                .checkMutiPermission(new PermissionCallback() {
                     @Override
                     public void onClose() {
 
@@ -139,20 +54,53 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     @Override
                     public void onFinish() {
-
+                        Toast.makeText(MainActivity.this, "选择本地图片", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onDeny(String permission, int position) {
-                        showToast("onDeny");
+
                     }
 
                     @Override
                     public void onGuarantee(String permission, int position) {
-                        showToast("onGuarantee");
+
                     }
                 });
-                break;
-        }
+    }
+
+    private void applyAllPermission() {
+        List<PermissionItem> permissionItems = new ArrayList<>();
+        permissionItems.add(new PermissionItem(Manifest.permission.CAMERA, getString(R.string.permission_cus_item_camera), R.drawable.permission_ic_camera));
+        permissionItems.add(new PermissionItem(Manifest.permission.WRITE_EXTERNAL_STORAGE, getString(R.string.permission_cus_item_storage), R.drawable.permission_ic_storage));
+        permissionItems.add(new PermissionItem(Manifest.permission.READ_PHONE_STATE, getString(R.string.permission_cus_item_phone), R.drawable.permission_ic_phone));
+        permissionItems.add(new PermissionItem(Manifest.permission.ACCESS_FINE_LOCATION, getString(R.string.permission_cus_item_location), R.drawable.permission_ic_location));
+        HiPermission.create(this)
+                .title(getString(R.string.permission_cus_title))
+                .permissions(permissionItems)
+                .filterColor(ResourcesCompat.getColor(getResources(), R.color.colorAccent, getTheme()))
+                .style(R.style.CustomPermissionStyle)
+                .msg(getString(R.string.permission_cus_all))
+                .checkMutiPermission(new PermissionCallback() {
+                    @Override
+                    public void onClose() {
+
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        Toast.makeText(MainActivity.this, "申请所有权限", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onDeny(String permission, int position) {
+
+                    }
+
+                    @Override
+                    public void onGuarantee(String permission, int position) {
+
+                    }
+                });
     }
 }

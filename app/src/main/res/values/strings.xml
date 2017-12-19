@@ -1,13 +1,13 @@
 <resources>
     <string name="app_name">HiPermission</string>
-    <string name="muti_permission_default_style">Mutl Permission(Default Style With Fade)</string>
-    <string name="muti_permission_blue_style">Mutl Permission(Blue Style With Scale)</string>
-    <string name="muti_permission_green_style">Mutl Permission(Green Style With Modal)</string>
-    <string name="single_permission">Single Permission</string>
-    <string name="permission_on_close">They cancelled our request</string>
-    <string name="permission_completed">All permissions requested completed</string>
-    <string name="permission_cus_item_camera">Camera</string>
-    <string name="permission_cus_item_phone">Call Phone</string>
-    <string name="permission_cus_title">Dear God</string>
-    <string name="permission_cus_msg">To protect the peace of the world, open these permissions! You and I together save the world!</string>
+    <!--权限提示-->
+    <string name="permission_cus_title">权限申请</string>
+    <string name="permission_cus_item_camera">照相机</string>
+    <string name="permission_cus_item_storage">存储空间</string>
+    <string name="permission_cus_item_phone">电话</string>
+    <string name="permission_cus_item_location">定位</string>
+    <string name="permission_cus_photo">为了您能正常使用选取图片功能，需要以下权限</string>
+    <string name="permission_cus_wechat_login">为了您能正常使用微信登录功能，需要以下权限</string>
+    <string name="permission_cus_pay">为了您能正常使用支付功能，需要以下权限</string>
+    <string name="permission_cus_all">为了您能正常使用App，需要以下权限</string>
 </resources>

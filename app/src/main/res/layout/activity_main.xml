@@ -1,33 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_main"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="me.weyye.demo.MainActivity">
+    android:orientation="vertical">
+    
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btn_select_photo"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="选择本地图片权限申请"/>
 
-    <Button
-        android:id="@+id/btn1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/muti_permission_default_style"/>
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btn_all_permission"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="该App所有权限申请"/>
 
-    <Button
-        android:id="@+id/btn2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/muti_permission_blue_style"/>
-
-    <Button
-        android:id="@+id/btn3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/muti_permission_green_style"/>
-    <Button
-        android:id="@+id/btn4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/single_permission"/>
 </LinearLayout>
